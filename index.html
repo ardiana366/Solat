@@ -43,14 +43,15 @@
 </head>
 <body>
 
-    <div id="status">RAKAAT</div>
-    <div id="rakaat-display">1</div>
-    
-    <div class="info">
-        <p id="sujud-indicator">Sujud: 0/2</p>
-        <button onclick="resetCounter()">RESET</button>
-        <p style="font-size: 0.8rem; margin-top: 10px;">Pastikan HP di bawah bayangan tubuh saat sujud</p>
-    </div>
+    <div id="start-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100;">
+    <h2 style="color: #fff; margin-bottom: 20px;">Siap Shalat?</h2>
+    <button id="btn-start" style="padding: 20px 50px; font-size: 1.5rem; background: #0f0; color: #000; border: none; border-radius: 50px; font-weight: bold; cursor: pointer;">MULAI SEKARANG</button>
+    <p style="color: #888; margin-top: 15px; font-size: 0.9rem;">Klik untuk aktifkan sensor & layar</p>
+</div>
+
+<video id="webcam" autoplay playsinline style="display:none;"></video>
+<canvas id="hidden-canvas" style="display:none;"></canvas>
+
 
     <script src="app.js"></script>
 </body>
