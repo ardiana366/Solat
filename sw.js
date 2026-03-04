@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rakaat-v2';
+const CACHE_NAME = 'rakaat-v3';
 const assets = [
   './',
   './index.html',
@@ -6,18 +6,20 @@ const assets = [
   './manifest.json'
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(assets);
-    })
-  );
+self.addEventListener('install', (event) => {
+  // Memaksa Service Worker baru langsung mengambil alih tanpa menunggu tab ditutup
+  self.skipWaiting();
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(response => {
-      return response || fetch(e.request);
+self.addEventListener('activate', (event) => {
+  // Membersihkan cache lama secara otomatis
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          return caches.delete(cacheName);
+        })
+      );
     })
   );
 });

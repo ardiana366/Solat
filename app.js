@@ -1,6 +1,7 @@
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js')
-    .then(() => console.log("Service Worker Registered"));
+  // Tambahkan query string agar browser mendeteksi perubahan file sw.js
+  navigator.serviceWorker.register('./sw.js?v=' + Date.now())
+    .then(() => console.log("Service Worker Updated"));
 }
 
 let rakaat = 1;
@@ -96,9 +97,7 @@ function analyzeFrame() {
             sujudCount++; 
             
             if (sujudCount === 2) {
-                rakaat++;
-                sujudCount = 0; 
-                playBeep();
+                processRakaatTransition()
             }
             updateUI();
         }
