@@ -128,19 +128,19 @@ function displayTasyahud(text, isAutoNext) {
     isTasyahudPhase = true;
     const display = document.getElementById('rakaat-display');
     
-    // Pecah teks menjadi 2 baris: "TASYAHUD" dan "AWAL/AKHIR"
-    // Ini membuat teks lebih berbentuk kotak (sesuai layar portrait)
+    // Pecah teks menjadi 2 baris agar berbentuk susun
     let formattedText = text.replace(" ", "<br>");
     
-    // Ubah ukuran font untuk teks (tidak akan membuat layout meloncat karena CSS flex: 1)
-    display.style.fontSize = "12vh"; 
+    // PERBAIKAN: Gunakan 'vw' (viewport width) agar menyesuaikan LEBAR layar.
+    // Ukuran 14vw biasanya sangat pas dan aman untuk kata berisi 8-10 huruf di layar HP portrait.
+    display.style.fontSize = "14vw"; 
     display.innerHTML = formattedText;
 
     if (isAutoNext) {
-        // Tunggu 15 detik untuk tasyahud awal, lalu masuk rakaat 3
+        // Tunggu 15 detik untuk tasyahud awal, lalu masuk rakaat berikutnya
         setTimeout(() => {
             rakaat++;
-            // Kembalikan ke ukuran raksasa untuk angka
+            // Kembalikan ke ukuran raksasa berbasis TINGGI layar (vh) untuk angka
             display.style.fontSize = "60vh"; 
             isTasyahudPhase = false;
             updateUI();

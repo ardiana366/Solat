@@ -30,15 +30,16 @@
             width: 100%;
         }
 
-        /* Kunci ruang tengah agar tidak meloncat */
         #rakaat-display {
-            flex: 1; /* Mengisi seluruh ruang kosong di tengah */
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             width: 100%;
-            font-size: 60vh; /* Ukuran default untuk angka */
+            box-sizing: border-box; /* Tambahkan ini */
+            padding: 0 20px;       /* Tambahkan ini agar ada jarak aman di kiri-kanan */
+            font-size: 60vh;
             line-height: 1.2;
             font-weight: 800;
             color: #0f0;
@@ -116,8 +117,8 @@
     <div style="margin-bottom: 30px;">
         <p style="color:#888; margin-bottom:10px;">Jenis Shalat:</p>
         <select id="select-jenis" style="padding:10px; border-radius:10px; width:200px; font-size:1.2rem; background:#222; color:#fff; border:1px solid #444;">
-            <option value="wajib" selected>Wajib (Ada Tasyahud Awal)</option>
-            <option value="sunnah">Sunnah (Langsung)</option>
+            <option value="wajib" selected>Wajib</option>
+            <option value="sunnah">Sunnah</option>
         </select>
     </div>
 
