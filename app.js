@@ -111,9 +111,20 @@ function playBeep() {
     osc.stop(context.currentTime + 0.1);
 }
 
+// FUNGSI RESET UTAMA
 document.getElementById('btn-reset').addEventListener('click', function() {
+    console.log("Resetting app...");
+    
+    // 1. Matikan kamera jika masih jalan
     if (video.srcObject) {
         video.srcObject.getTracks().forEach(track => track.stop());
     }
+    
+    // 2. Refresh halaman sepenuhnya
     window.location.href = window.location.pathname + '?reload=' + Date.now();
 });
+
+function resetApp() {
+    // Refresh halaman untuk mengembalikan semua ke kondisi awal
+    window.location.reload();
+}
