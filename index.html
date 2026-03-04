@@ -20,10 +20,30 @@
             overflow: hidden;
         }
         
-        #rakaat-display {
-            font-size: 15rem;
-            font-weight: bold;
+        /* Pastikan main-container memenuhi layar */
+        #main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            width: 100%;
         }
+
+        /* Kunci ruang tengah agar tidak meloncat */
+        #rakaat-display {
+            flex: 1; /* Mengisi seluruh ruang kosong di tengah */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            font-size: 60vh; /* Ukuran default untuk angka */
+            line-height: 1.2;
+            font-weight: 800;
+            color: #0f0;
+        }
+        
         #status {
             margin-top: 5vh;
             font-size: 1.5rem;

@@ -128,31 +128,38 @@ function displayTasyahud(text, isAutoNext) {
     isTasyahudPhase = true;
     const display = document.getElementById('rakaat-display');
     
-    // Kecilkan font sedikit jika teks panjang
-    display.style.fontSize = "10vh";
-    display.innerText = text;
+    // Pecah teks menjadi 2 baris: "TASYAHUD" dan "AWAL/AKHIR"
+    // Ini membuat teks lebih berbentuk kotak (sesuai layar portrait)
+    let formattedText = text.replace(" ", "<br>");
+    
+    // Ubah ukuran font untuk teks (tidak akan membuat layout meloncat karena CSS flex: 1)
+    display.style.fontSize = "12vh"; 
+    display.innerHTML = formattedText;
 
     if (isAutoNext) {
         // Tunggu 15 detik untuk tasyahud awal, lalu masuk rakaat 3
         setTimeout(() => {
             rakaat++;
-            display.style.fontSize = "65vh"; // Kembalikan ke ukuran raksasa
+            // Kembalikan ke ukuran raksasa untuk angka
+            display.style.fontSize = "60vh"; 
             isTasyahudPhase = false;
             updateUI();
         }, 15000); 
     } else {
-        // Tasyahud akhir tetap di layar sampai user klik Reset
+        // Tasyahud akhir tetap di layar
         document.getElementById('sujud-indicator').innerText = "Shalat Selesai";
     }
 }
 
+// Pastikan fungsi updateUI menggunakan innerHTML (bukan innerText) 
+// agar transisi kembali dari teks ke angka berjalan mulus.
 function updateUI() {
     const display = document.getElementById('rakaat-display');
     const indicator = document.getElementById('sujud-indicator');
     
     if (!isTasyahudPhase) {
-        display.style.fontSize = "65vh";
-        display.innerText = rakaat;
+        display.style.fontSize = "60vh"; // Pastikan font kembali besar
+        display.innerHTML = rakaat;      // Gunakan innerHTML
         indicator.innerText = `SUJUD: ${sujudCount}/2`;
     }
 }
