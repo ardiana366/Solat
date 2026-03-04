@@ -9,6 +9,9 @@ let isDark = false;
 let wakeLock = null;
 let lastActionTime = 0;
 let darkThreshold = 40; // Nilai default, akan diperbarui saat kalibrasi
+let isTasyahudPhase = false;
+let targetRakaat = 4;
+let jenisShalat = "wajib";
 
 const video = document.getElementById('webcam');
 const canvas = document.getElementById('hidden-canvas');
@@ -31,6 +34,10 @@ function getCurrentBrightness() {
 }
 
 document.getElementById('btn-start').addEventListener('click', async () => {
+    // Simpan pilihan user
+    targetRakaat = parseInt(document.getElementById('select-rakaat').value);
+    jenisShalat = document.getElementById('select-jenis').value;
+    
     if ('wakeLock' in navigator) {
         try {
             wakeLock = await navigator.wakeLock.request('screen');
@@ -69,6 +76,8 @@ document.getElementById('btn-start').addEventListener('click', async () => {
 });
 
 function analyzeFrame() {
+    if (isTasyahudPhase) return;
+    
     const brightness = getCurrentBrightness();
     const currentTime = Date.now();
 
@@ -96,9 +105,57 @@ function analyzeFrame() {
     }
 }
 
+function processRakaatTransition() {
+    sujudCount = 0;
+    playBeep();
+
+    // 1. CEK TASYAHUD AKHIR (Jika rakaat saat ini sudah maksimal)
+    if (rakaat === targetRakaat) {
+        displayTasyahud("TASYAHUD AKHIR", false);
+        return;
+    }
+
+    // 2. CEK TASYAHUD AWAL (Hanya jika Wajib & Rakaat ke-2 & Target > 2)
+    if (jenisShalat === "wajib" && rakaat === 2 && targetRakaat > 2) {
+        displayTasyahud("TASYAHUD AWAL", true);
+    } else {
+        // Shalat Sunnah atau Rakaat biasa
+        rakaat++;
+        updateUI();
+    }
+}
+
+function displayTasyahud(text, isAutoNext) {
+    isTasyahudPhase = true;
+    const display = document.getElementById('rakaat-display');
+    
+    // Kecilkan font sedikit jika teks panjang
+    display.style.fontSize = "10vh";
+    display.innerText = text;
+
+    if (isAutoNext) {
+        // Tunggu 15 detik untuk tasyahud awal, lalu masuk rakaat 3
+        setTimeout(() => {
+            rakaat++;
+            display.style.fontSize = "65vh"; // Kembalikan ke ukuran raksasa
+            isTasyahudPhase = false;
+            updateUI();
+        }, 15000); 
+    } else {
+        // Tasyahud akhir tetap di layar sampai user klik Reset
+        document.getElementById('sujud-indicator').innerText = "Shalat Selesai";
+    }
+}
+
 function updateUI() {
-    display.innerText = rakaat;
-    sujudInfo.innerText = `Sujud: ${sujudCount}/2`;
+    const display = document.getElementById('rakaat-display');
+    const indicator = document.getElementById('sujud-indicator');
+    
+    if (!isTasyahudPhase) {
+        display.style.fontSize = "65vh";
+        display.innerText = rakaat;
+        indicator.innerText = `SUJUD: ${sujudCount}/2`;
+    }
 }
 
 function playBeep() {

@@ -80,22 +80,26 @@
 </head>
 <body>
 
-    <div id="start-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; padding: 20px; box-sizing: border-box;">
+    <h1 style="color:#0f0; margin-bottom:10px;">Rakaat Counter</h1>
     
-    <h2 style="color: #0f0; margin-bottom: 30px; font-size: 1.8rem;">Panduan Posisi HP</h2>
-    
-    <div style="background: #222; padding: 20px; border-radius: 15px; margin-bottom: 30px; max-width: 300px; color: #ccc; line-height: 1.5;">
-        <ul style="padding-left: 20px; text-align: left;">
-            <li>Letakkan HP di sajadah, posisi <b>horizontal</b> (landscape).</li>
-            <li>Taruh di area <b>bawah perut/dada</b> saat posisi sujud.</li>
-            <li>Pastikan kamera depan menghadap ke arah tubuh Anda.</li>
-            <li>Aplikasi mendeteksi bayangan tubuh Anda saat sujud.</li>
-        </ul>
+    <div style="margin-bottom: 20px;">
+        <p style="color:#888; margin-bottom:10px;">Jumlah Rakaat:</p>
+        <select id="select-rakaat" style="padding:10px; border-radius:10px; width:200px; font-size:1.2rem; background:#222; color:#fff; border:1px solid #444;">
+            <option value="2">2 Rakaat</option>
+            <option value="3">3 Rakaat</option>
+            <option value="4" selected>4 Rakaat</option>
+        </select>
     </div>
 
-    <button id="btn-start" style="padding: 20px 60px; font-size: 1.4rem; background: #0f0; color: #000; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 0 20px rgba(0,255,0,0.3);">
-        SAYA MENGERTI & MULAI
-    </button>
+    <div style="margin-bottom: 30px;">
+        <p style="color:#888; margin-bottom:10px;">Jenis Shalat:</p>
+        <select id="select-jenis" style="padding:10px; border-radius:10px; width:200px; font-size:1.2rem; background:#222; color:#fff; border:1px solid #444;">
+            <option value="wajib" selected>Wajib</option>
+            <option value="sunnah">Sunnah</option>
+        </select>
+    </div>
+
+    <button id="btn-start">MULAI SHALAT</button>
 
     <p style="color: #666; margin-top: 20px; font-size: 0.8rem; text-align: center;">
         Aplikasi akan meminta izin kamera untuk mendeteksi bayangan sujud.<br>

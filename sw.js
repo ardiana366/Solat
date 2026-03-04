@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rakaat-v1';
+const CACHE_NAME = 'rakaat-v2';
 const assets = [
   './',
   './index.html',
