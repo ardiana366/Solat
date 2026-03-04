@@ -7,6 +7,7 @@ let rakaat = 1;
 let sujudCount = 0;
 let isDark = false;
 let wakeLock = null;
+let lastActionTime = 0;
 
 const video = document.getElementById('webcam');
 const canvas = document.getElementById('hidden-canvas');
@@ -50,22 +51,50 @@ function analyzeFrame() {
     }
     brightness /= (data.length / 4);
 
-    // LOGIKA DETEKSI GELAP (SUJUD)
-    // Angka 50 adalah threshold. Jika terlalu sensitif, turunkan ke 30.
-    if (brightness < 50) { 
-        if (!isDark) isDark = true;
+    const currentTime = Date.now();
+    // Jeda 1.5 detik agar tidak terjadi double-count akibat gerakan tangan/kepala yang cepat
+    if (currentTime - lastActionTime < 1500) return; 
+
+    // Ambang batas kegelapan (Sesuaikan jika ruangan terlalu terang/gelap)
+    const darkThreshold = 40; 
+
+    if (brightness < darkThreshold) { 
+        // KONDISI: SEDANG SUJUD (GELAP)
+        if (!isDark) {
+            isDark = true;
+            lastActionTime = currentTime;
+            console.log("Deteksi: Kepala turun (Sujud)");
+        }
     } else {
+        // KONDISI: BANGUN DARI SUJUD (TERANG)
         if (isDark) {
             isDark = false;
-            sujudCount++;
+            lastActionTime = currentTime;
+            sujudCount++; // Tambah hitungan sujud saat kepala naik
+            
+            console.log("Deteksi: Kepala naik. Jumlah sujud saat ini: " + sujudCount);
+
+            // LOGIKA UTAMA:
+            // Rakaat TIDAK bertambah di sujud ke-1.
+            // Rakaat BARU bertambah setelah sujud ke-2 selesai.
             if (sujudCount === 2) {
                 rakaat++;
-                sujudCount = 0;
-                playBeep(); // Bunyi bip sebagai feedback di iOS
+                sujudCount = 0; // Reset hitungan sujud untuk rakaat berikutnya
+                playBeep();    // Feedback suara agar user tahu rakaat sudah ganti
             }
+            
             updateUI();
         }
     }
+}
+
+function updateUI() {
+    const display = document.getElementById('rakaat-display');
+    const indicator = document.getElementById('sujud-indicator');
+    
+    display.innerText = rakaat;
+    // Menampilkan status sujud agar user bisa memantau
+    indicator.innerText = `Sujud: ${sujudCount}/2`;
 }
 
 function playBeep() {
