@@ -113,8 +113,8 @@ function updateUI() {
     sujudInfo.innerText = `Sujud: ${sujudCount}/2`;
 }
 
-function resetCounter() {
-    rakaat = 1;
-    sujudCount = 0;
-    updateUI();
+// FUNGSI RESET UTAMA
+function resetApp() {
+    // Refresh halaman untuk mengembalikan semua ke kondisi awal
+    window.location.reload();
 }
